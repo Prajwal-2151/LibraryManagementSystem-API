@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +27,7 @@ SECRET_KEY = 'django-insecure-a2le_8gqm#ume)e8(zh843!jf1(fk$krp9b#=rwp6ckp9kwhe^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -75,25 +77,31 @@ WSGI_APPLICATION = 'LibraryManagementSystem.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#           'default': {
+#                     'ENGINE': 'django.db.backends.mysql',
+#                     'NAME': 'librarymanagementsystem',
+#                     'USER': 'root',
+#                     'PASSWORD': '1234',
+#                     'HOST': 'localhost',
+#                     'PORT': '3306',
+#           }
+# }
+
+DATABASE_URL = "mysql://root:PiiRWzyyJReAcCpKMwbuKpFbmCfrxAQW@autorack.proxy.rlwy.net:54720/railway"
+
 DATABASES = {
-          'default': {
-                    'ENGINE': 'django.db.backends.mysql',
-                    'NAME': 'librarymanagementsystem',
-                    'USER': 'root',
-                    'PASSWORD': '1234',
-                    'HOST': 'localhost',
-                    'PORT': '3306',
-          }
+          'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=False)
 }
 
-# CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_BROKER_URL = 'redis://default:dFpefocPSUiHemdoTUGNurVuxfbGuylm@redis-production-4ebc.up.railway.app:6379'
+CELERY_RESULT_BACKEND = 'redis://default:dFpefocPSUiHemdoTUGNurVuxfbGuylm@redis-production-4ebc.up.railway.app:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
 CELERY_TIMEZONE = 'Asia/Kolkata'
+# CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
+# CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
