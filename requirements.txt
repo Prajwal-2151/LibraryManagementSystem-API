@@ -16,6 +16,7 @@ inflection==0.5.1
 kombu==5.4.2
 packaging==24.2
 prompt_toolkit==3.0.48
+PyMySQL==1.1.1
 python-dateutil==2.9.0.post0
 pytz==2024.2
 PyYAML==6.0.2
