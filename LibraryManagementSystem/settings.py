@@ -12,8 +12,12 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
-
+from environ import Env
 import dj_database_url
+
+env = Env()
+env.read_env()
+ENVIRONMENT = env('ENVIRONMENT', default='production')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,11 +26,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-a2le_8gqm#ume)e8(zh843!jf1(fk$krp9b#=rwp6ckp9kwhe^'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+if ENVIRONMENT == 'development':
+          DEBUG = True
+else:
+          DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 # Application definition
@@ -88,14 +94,12 @@ WSGI_APPLICATION = 'LibraryManagementSystem.wsgi.application'
 #           }
 # }
 
-DATABASE_URL = "mysql://root:PiiRWzyyJReAcCpKMwbuKpFbmCfrxAQW@autorack.proxy.rlwy.net:54720/railway"
-
 DATABASES = {
-          'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=False)
+          'default': dj_database_url.parse(env('DATABASE_URL'), conn_max_age=600, ssl_require=False)
 }
 
-CELERY_BROKER_URL = 'redis://default:dFpefocPSUiHemdoTUGNurVuxfbGuylm@redis-production-4ebc.up.railway.app:6379'
-CELERY_RESULT_BACKEND = 'redis://default:dFpefocPSUiHemdoTUGNurVuxfbGuylm@redis-production-4ebc.up.railway.app:6379'
+CELERY_BROKER_URL = env('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND')
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
