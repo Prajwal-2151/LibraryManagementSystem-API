@@ -51,7 +51,10 @@ INSTALLED_APPS = [
           'Book',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = [
+          'https://librarymanagementsystem.up.railway.app/',
+          'http://librarymanagementsystem.up.railway.app/',
+]
 
 MIDDLEWARE = [
           'corsheaders.middleware.CorsMiddleware',
