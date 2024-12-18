@@ -52,8 +52,8 @@ INSTALLED_APPS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-          'http://librarymanagementsystem.up.railway.app',
-          'https://librarymanagementsystem.up.railway.app',
+          'http://lms-api.up.railway.app',
+          'https://lms-api.up.railway.app',
 ]
 
 SECURE_SSL_REDIRECT = True
