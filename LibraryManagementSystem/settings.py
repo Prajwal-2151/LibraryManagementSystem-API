@@ -53,7 +53,10 @@ INSTALLED_APPS = [
 
 CORS_ALLOWED_ORIGINS = [
           'http://librarymanagementsystem.up.railway.app',
+          'https://librarymanagementsystem.up.railway.app',
 ]
+
+SECURE_SSL_REDIRECT = True
 
 MIDDLEWARE = [
           'corsheaders.middleware.CorsMiddleware',
