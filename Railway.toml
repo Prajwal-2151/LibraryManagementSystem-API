@@ -1,0 +1,8 @@
+[build]
+
+apt-packages = [
+    'build-essential',
+    'python3-dev',
+    'pkg-config',
+    'libmysqlclient-dev'
+]
