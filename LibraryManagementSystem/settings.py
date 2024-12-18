@@ -52,7 +52,6 @@ INSTALLED_APPS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-          'https://librarymanagementsystem.up.railway.app',
           'http://librarymanagementsystem.up.railway.app',
 ]
 
