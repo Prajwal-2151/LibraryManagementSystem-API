@@ -1,7 +1,7 @@
 import json
 import os
 from datetime import date, datetime
-
+from loguru import logger
 from django.conf import settings
 from django.db.models import Q
 from rest_framework import status
@@ -313,18 +313,19 @@ class RecordAPI(ModelViewSet):
 
 class GenerateReport(APIView):
           def post(self, request, *args, **kwargs):
+                    logger.info("Received request to generate report")
                     try:
                               # Call the Celery task to generate the report asynchronously
                               generate_report.delay()
+                              logger.info("Report generation task triggered successfully")
 
-                              # If the task is triggered successfully, return this response
                               return Response({
                                         'status': 'success',
                                         'message': 'Report generation in progress.',
                               }, status=status.HTTP_202_ACCEPTED)
 
                     except Exception as e:
-                              # Handle any exceptions that occur during the task invocation
+                              logger.error("Error while triggering the report generation task: {}", str(e))
                               return Response({
                                         'status': 'error',
                                         'message': f'An error occurred while triggering the report: {str(e)}',
@@ -332,15 +333,18 @@ class GenerateReport(APIView):
 
 class LatestReport(APIView):
           def get(self, request, *args, **kwargs):
+                    logger.info("Received request to fetch the latest report")
                     try:
                               # Define the path to the reports directory
                               reports_dir = os.path.join(settings.BASE_DIR, 'reports')
+                              logger.info("Reports directory path: {}", reports_dir)
 
-                              # Get the latest report file (assuming filenames are in the format 'report_YYYYMMDD.json')
+                              # Get the latest report file
                               report_files = [f for f in os.listdir(reports_dir) if
                                               f.startswith('report_') and f.endswith('.json')]
 
                               if not report_files:
+                                        logger.warning("No report files found in directory: {}", reports_dir)
                                         return Response({
                                                   'status': 'error',
                                                   'message': 'No reports found.',
@@ -349,19 +353,21 @@ class LatestReport(APIView):
                               # Sort reports by date (latest file first)
                               latest_report_file = max(report_files, key=lambda f: datetime.strptime(f[7:15], '%Y%m%d'))
                               file_path = os.path.join(reports_dir, latest_report_file)
+                              logger.info("Latest report file determined: {}", latest_report_file)
 
-                              # Return the latest report file as a JSON response
+                              # Read and return the latest report
                               with open(file_path, 'r') as f:
                                         report_data = f.read()
+                              logger.info("Latest report retrieved successfully")
 
                               return Response({
                                         'status': 'success',
                                         'message': 'Latest report retrieved successfully.',
-                                        'report': json.loads(report_data)  # Returning the content of the report
+                                        'report': json.loads(report_data),
                               }, status=status.HTTP_200_OK)
 
                     except Exception as e:
-                              # Handle any exceptions that occur during the process
+                              logger.error("Error while fetching the latest report: {}", str(e))
                               return Response({
                                         'status': 'error',
                                         'message': f'An error occurred while fetching the latest report: {str(e)}',
