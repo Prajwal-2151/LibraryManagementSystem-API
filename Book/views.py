@@ -334,6 +334,7 @@ class LatestReport(APIView):
                     try:
                               # Define the path to the reports directory
                               reports_dir = os.path.join(settings.BASE_DIR, 'reports')
+                              print(f'Reports directory path: {reports_dir}')
 
                               # Get the latest report file (assuming filenames are in the format 'report_YYYYMMDD.json')
                               report_files = [f for f in os.listdir(reports_dir) if
