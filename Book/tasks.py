@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 
 from celery import shared_task
-
+from django.conf import settings
 from .models import Author, Book, Borrowrecord
 
 @shared_task()
@@ -21,14 +21,13 @@ def generate_report():
                     'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
           }
 
-          # Ensure the reports directory exists
-          os.makedirs('reports', exist_ok=True)
+          # Use an absolute path
+          reports_dir = os.path.join(settings.BASE_DIR, 'reports')
+          os.makedirs(reports_dir, exist_ok=True)
 
-          # Create a file name with a timestamp
-          file_name = f'reports/report_{datetime.now().strftime("%Y%m%d")}.json'
-          file_path = os.path.join(file_name)
+          # Save the report
+          file_path = os.path.join(reports_dir, f'report_{datetime.now().strftime("%Y%m%d")}.json')
 
-          # Save the data to a JSON file
           with open(file_path, 'w') as f:
                     json.dump(report_data, f, indent=4)
 
