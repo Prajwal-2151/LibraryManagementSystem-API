@@ -25,25 +25,23 @@ def generate_report():
                               'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     }
 
-                    # Define the reports directory path
-                    reports_dir = os.path.join(settings.BASE_DIR, 'reports')
+                    # Use the REPORTS_DIR from settings
+                    reports_dir = settings.REPORTS_DIR
 
-                    # Check if the directory exists, create if not
+                    # Ensure reports directory exists
                     if not os.path.exists(reports_dir):
-                              os.makedirs(reports_dir)
-                              logger.info("Reports directory created at: {}", reports_dir)
-                    else:
-                              logger.info("Reports directory already exists at: {}", reports_dir)
+                              os.makedirs(reports_dir, exist_ok=True)
+                    logger.info(f"Reports directory ensured at: {reports_dir}")
 
+                    # Generate the report file name based on the current date
                     file_path = os.path.join(reports_dir, f'report_{datetime.now().strftime("%Y%m%d")}.json')
 
-                    # Save the report
+                    # Save the report to the file
                     with open(file_path, 'w') as f:
                               json.dump(report_data, f, indent=4)
-                    logger.info("Report saved successfully at: {}", file_path)
+                    logger.info(f"Report saved successfully at: {file_path}")
 
                     return f'Report generated successfully at: {file_path}'
-
           except Exception as e:
                     logger.error("Error during report generation: {}", str(e))
                     raise e
