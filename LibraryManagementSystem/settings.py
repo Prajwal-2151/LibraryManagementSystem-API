@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+
+from django.conf import settings
 from environ import Env
 import dj_database_url
 
@@ -148,6 +150,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
+
+REPORTS_DIR = os.path.join(settings.BASE_DIR, 'reports')
+os.makedirs(REPORTS_DIR, exist_ok=True)
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
