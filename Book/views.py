@@ -246,6 +246,7 @@ class RecordAPI(ModelViewSet):
                                                             'code': status.HTTP_201_CREATED,
                                                             'message': 'Borrow record added successfully',
                                                             'new_record': serializer.data,
+                                                            'book': book.b_title,
                                                             'available_copies_before': available_before,
                                                             'available_copies_after': book.available_copies,
                                                   }
