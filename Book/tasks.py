@@ -6,10 +6,6 @@ from celery import shared_task
 from django.conf import settings
 from .models import Author, Book, Borrowrecord
 
-import logging
-
-logger = logging.getLogger(__name__)
-
 @shared_task()
 def generate_report():
           # Calculate required data
@@ -34,5 +30,4 @@ def generate_report():
           with open(file_path, 'w') as f:
                     json.dump(report_data, f, indent=4)
 
-          logger.info(f'Report generated successfully at: {file_path}')
           return f'Report generated successfully at: {file_path}'
