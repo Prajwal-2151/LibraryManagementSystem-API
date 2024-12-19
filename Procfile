@@ -1,2 +1,2 @@
 web: gunicorn LibraryManagementSystem.wsgi --log-file -
-worker: celery -A LibraryManagementSystem worker -l info
+worker: celery -A LibraryManagementSystem worker --loglevel=info
