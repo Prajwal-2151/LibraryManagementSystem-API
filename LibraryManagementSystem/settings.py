@@ -13,13 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
-from django.conf import settings
-from environ import Env
 import dj_database_url
-
-env = Env()
-env.read_env()
-ENVIRONMENT = env('ENVIRONMENT', default='production')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,13 +22,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = 'django-insecure-a2le_8gqm#ume)e8(zh843!jf1(fk$krp9b#=rwp6ckp9kwhe^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if ENVIRONMENT == 'development':
-          DEBUG = True
-else:
-          DEBUG = False
+DEBUG = True
+
 ALLOWED_HOSTS = ['*']
 
 # Application definition
@@ -106,18 +98,20 @@ WSGI_APPLICATION = 'LibraryManagementSystem.wsgi.application'
 #           }
 # }
 
+DATABASE_URL = 'postgresql://postgres:AzloqKjDINXTLNGRYvtMVDowZNwwaxJQ@junction.proxy.rlwy.net:10942/railway'
+
 DATABASES = {
-          'default': dj_database_url.parse(env('DATABASE_URL'), conn_max_age=600, ssl_require=False)
+          'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=False)
 }
 
-CELERY_BROKER_URL = env('CELERY_BROKER_URL')
-CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND')
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Kolkata'
 # CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
 # CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_RESULT_BACKEND = 'redis://default:SrZuvMzxvxCzsiyiHcmmerslALGUlhjU@junction.proxy.rlwy.net:47622'
+CELERY_BROKER_URL = 'redis://default:SrZuvMzxvxCzsiyiHcmmerslALGUlhjU@junction.proxy.rlwy.net:47622'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -151,10 +145,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-REPORTS_DIR = '/app/reports'
+REPORTS_DIR = os.path.join(BASE_DIR, 'reports')
 
 if not os.path.exists(REPORTS_DIR):
-          os.makedirs(REPORTS_DIR, exist_ok=True)
+          os.makedirs('reports', exist_ok=True)
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
